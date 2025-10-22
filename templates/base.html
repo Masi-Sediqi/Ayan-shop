@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+        {% include 'head.html' %}
+        {% load django_htmx %}
+       
+    <body data-mn-mode="light" hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'>
+
+        {% block header %}
+        {% include 'header.html' %}
+        {% endblock %}
+
+        {% block content %}{% endblock %}
+        {% include 'scripts.html' %}
+        {% block extra_scripts %}{% endblock %}
+
+    </body>
+</html>
