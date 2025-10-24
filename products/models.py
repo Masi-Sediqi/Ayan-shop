@@ -1,21 +1,44 @@
 from django.db import models
 from colorfield.fields import ColorField
 from django.utils import timezone
+from django.urls import reverse
+from django.contrib.auth.models import User
+
+class MainCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=120, unique=True)
+    icon = models.ImageField(upload_to="icon_images", blank=False)
+
+    class Meta:
+        verbose_name_plural = 'Main Categories'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
 
 class Category(models.Model):
+    main_category = models.ForeignKey(
+        MainCategory,
+        on_delete=models.CASCADE,
+        related_name='categories',
+        blank=True,
+        null=True
+    )
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=120, unique=True)
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='categories/', blank=True, null=True)
     second_image = models.ImageField(upload_to='categories/', blank=True, null=True)
     third_image = models.ImageField(upload_to='categories/', blank=True, null=True)
+    icon = models.ImageField(upload_to="icon_images", blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Categories'
         ordering = ['name']
+        unique_together = ('main_category', 'name')
 
     def __str__(self):
-        return self.name
+        return f"→ {self.name}"
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='products')
@@ -23,10 +46,19 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     brand = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    show_in_main_page = models.BooleanField(default=False)  
+
+    liked_by = models.ManyToManyField(User, blank=True, related_name='liked_products')
 
     def __str__(self):
         return self.name
 
+    def total_likes(self):
+        return self.liked_by.count()
+
+    
+    def get_absolute_url(self):
+        return reverse('products:product_details', args=[self.id])
 
 class Size(models.Model):
     name = models.CharField(max_length=50)
@@ -52,6 +84,7 @@ class ProductVariant(models.Model):
     image = models.ImageField(upload_to="products/main/")
     image_hover = models.ImageField(upload_to="products/main/")
     stock = models.PositiveIntegerField(default=0)
+    show_in_main_page = models.BooleanField(default=False)  
 
     class Meta:
         unique_together = ('product', 'size', 'color')

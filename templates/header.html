@@ -14,192 +14,49 @@
     <div class="mn-sidebar">
         <div class="mn-sidebar-body">
             <button type="button" class="side-close" title="Close"></button>
-            <ul class="mn-sb-list">
-                <li class="mn-sb-title condense"><span>Fashion</span></li>
+           <ul class="mn-sb-list">
+            {% for main_cat in main_categories %}
+                <li class="mn-sb-title condense">
+                    <span>{{ main_cat.name }}</span>
+                </li>
+
                 <li class="mn-sb-item sb-drop-item">
                     <a href="javascript:void(0)" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/clothes-2.svg' %}" alt="clothes">
-                        <span class="condense">Clothes<i class="drop-arrow ri-arrow-down-s-line"></i></span>
+                        {% if main_cat.icon %}
+                           <img src="{{ main_cat.icon.url }}" alt="{{ main_cat.name }}" width="40" height="40" 
+                            style="border-radius: 50%; object-fit: cover;">
+                        {% endif %}
+                        <span class="condense">
+                            {{ main_cat.name }}
+                            <i class="drop-arrow ri-arrow-down-s-line"></i>
+                        </span>
                     </a>
+
                     <ul class="mn-sb-drop">
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">T-shirts</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">Shirts</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">gowns</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">Dresses</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">sharees</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">jeans</a>
-                        </li>
+                        {% for subcat in main_cat.categories.all %}
+                            <li class="list">
+                                <a href="{% url 'products:category_products' subcat.slug %}" class="mn-page-link drop">
+                                    {{ subcat.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </li>
+            {% endfor %}
+
+            {% for cat in single_categories %}
                 <li class="mn-sb-item sb-drop-item">
-                    <a href="shop-right-sidebar.html" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/shoes.svg' %}" alt="clothes">
-                        <span class="condense">Shoes</span>
+                    <a href="{% url 'products:category_products' cat.slug %}" class="mn-drop-toggle">
+                         {% if cat.icon %}
+                           <img src="{{ cat.icon.url }}" width="40" height="40" 
+                            style="border-radius: 50%; object-fit: cover;">
+                        {% endif %}
+                        <span class="condense">{{ cat.name }}</span>
                     </a>
                 </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="shop-right-sidebar.html" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/glasses.svg' %}" alt="glasses">
-                        <span class="condense">glasses</span>
-                    </a>
-                </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="javascript:void(0)" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/bag.svg' %}" alt="bag">
-                        <span class="condense">Bags<i class="drop-arrow ri-arrow-down-s-line"></i></span>
-                    </a>
-                    <ul class="mn-sb-drop">
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">Purse</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">Bags</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">wallet</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="shop-right-sidebar.html" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/hat.svg' %}" alt="hat">
-                        <span class="condense">Hat</span>
-                    </a>
-                </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="javascript:void(0)" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/makeup.svg' %}" alt="makeup">
-                        <span class="condense">Makeup<i class="drop-arrow ri-arrow-down-s-line"></i></span>
-                    </a>
-                    <ul class="mn-sb-drop">
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">Lipstick</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">eye liner</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">nail paint</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">Makeup kit</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="javascript:void(0)" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/cosmetics.svg' %}" alt="cosmetics">
-                        <span class="condense">Cosmetics<i class="drop-arrow ri-arrow-down-s-line"></i></span>
-                    </a>
-                    <ul class="mn-sb-drop">
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">Shampoo</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">face wash</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">body wash</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">sunscreen</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">serum</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="mn-sb-title condense"><span>Bakery</span></li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="javascript:void(0)" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/cake.svg' %}" alt="Cake">
-                        <span class="condense">Cake<i class="drop-arrow ri-arrow-down-s-line"></i></span>
-                    </a>
-                    <ul class="mn-sb-drop">
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">cup cake</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">pastry</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">Cake</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="shop-right-sidebar.html" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/bread.svg' %}" alt="Bread">
-                        <span class="condense">Bread</span>
-                    </a>
-                </li>
-                <li class="mn-sb-title condense"><span>Vegetables</span></li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="javascript:void(0)" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/tuber.svg' %}" alt="tuber">
-                        <span class="condense">tuber root<i class="drop-arrow ri-arrow-down-s-line"></i></span>
-                    </a>
-                    <ul class="mn-sb-drop">
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">Sweet Potato</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">Ginger</a>
-                        </li>
-                        <li class="list">
-                            <a href="shop-right-sidebar.html" class="mn-page-link drop">cassava</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="shop-right-sidebar.html" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/tomato.svg' %}" alt="tomato">
-                        <span class="condense">Tomato</span>
-                    </a>
-                </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="shop-right-sidebar.html" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/lemon.svg' %}" alt="lemon">
-                        <span class="condense">Lemon</span>
-                    </a>
-                </li>
-                <li class="mn-sb-title condense"><span>Fruits</span></li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="shop-right-sidebar.html" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/avocado.svg' %}" alt="avocado">
-                        <span class="condense">avocado</span>
-                    </a>
-                </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="shop-right-sidebar.html" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/strawberry.svg' %}" alt="strawberry">
-                        <span class="condense">strawberry</span>
-                    </a>
-                </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="shop-right-sidebar.html" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/cherry.svg' %}" alt="cherry">
-                        <span class="condense">cherry</span>
-                    </a>
-                </li>
-                <li class="mn-sb-item sb-drop-item">
-                    <a href="shop-right-sidebar.html" class="mn-drop-toggle">
-                        <img src="{% static 'assets/img/icons/lychee.svg' %}" alt="Lychee">
-                        <span class="condense">Lychee</span>
-                    </a>
-                </li>
-            </ul>
+            {% endfor %}
+        </ul>
+
         </div>
     </div>
 
@@ -299,7 +156,7 @@
                                                     <li><a href="checkout.html">Checkout</a></li>
                                                     <li><a href="compare.html">Compare</a></li>
                                                     <li><a href="faq.html">FAQ</a></li>
-                                                    <li><a href="login.html">Login</a></li>
+                                                    <li><a href="{% url 'account_login' %}">Login</a></li>
                                                 </ul>
                                             </li>
                                         </ul>
@@ -370,7 +227,7 @@
                                             <li><a href="checkout.html">Checkout</a></li>
                                             <li><a href="compare.html">Compare</a></li>
                                             <li><a href="faq.html">Faq</a></li>
-                                            <li><a href="login.html">Login</a></li>
+                                            <li><a href="{% url 'account_login' %}">Login</a></li>
                                             <li><a href="register.html">Register</a></li>
                                         </ul>
                                     </li>
@@ -435,20 +292,23 @@
                                 </svg>
                             </a>
                             <ul class="sub-menu">
-                                <li>
-                                    <a href="login.html">Login</a>
-                                </li>
-                                <li>
-                                    <a href="register.html">Register</a>
-                                </li>
-                                <li>
-                                    <a href="checkout.html">Checkout</a>
-                                </li>
+                                {% if user.is_authenticated %}
+                                    <li>
+                                        <a href="{% url 'account_logout' %}">Logout</a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="{% url 'account_login' %}">Login</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'account_signup' %}">Register</a>
+                                    </li>
+                                {% endif %}
                             </ul>
                         </div>
                         <div class="mn-tool-wish">
                             <a href="javascript:void(0)" class="mn-main-wishlist mn-wishlist-toggle">
-                                <span class="label lbl-1">3</span>
+                                <span class="label lbl-1">{{ liked_count }}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="512" height="512" x="0"
                                     y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512"
                                     xml:space="preserve">
@@ -496,7 +356,7 @@
                 </a>
             </li>
             <li>
-                <a href="login.html" class="mn-main-user">
+                <a href="{% url 'account_login' %}" class="mn-main-user">
                     <svg class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M512.476 648.247c-170.169 0-308.118-136.411-308.118-304.681 0-168.271 137.949-304.681 308.118-304.681 170.169 0 308.119 136.411 308.119 304.681C820.594 511.837 682.645 648.247 512.476 648.247L512.476 648.247zM512.476 100.186c-135.713 0-246.12 109.178-246.12 243.381 0 134.202 110.407 243.381 246.12 243.381 135.719 0 246.126-109.179 246.126-243.381C758.602 209.364 648.195 100.186 512.476 100.186L512.476 100.186zM935.867 985.115l-26.164 0c-9.648 0-17.779-6.941-19.384-16.35-2.646-15.426-6.277-30.52-11.142-44.95-24.769-87.686-81.337-164.13-159.104-214.266-63.232 35.203-134.235 53.64-207.597 53.64-73.555 0-144.73-18.537-208.084-53.922-78 50.131-134.75 126.68-159.564 214.549 0 0-4.893 18.172-11.795 46.4-2.136 8.723-10.035 14.9-19.112 14.9L88.133 985.116c-9.415 0-16.693-8.214-15.47-17.452C91.698 824.084 181.099 702.474 305.51 637.615c58.682 40.472 129.996 64.267 206.966 64.267 76.799 0 147.968-23.684 206.584-63.991 124.123 64.932 213.281 186.403 232.277 329.772C952.56 976.901 945.287 985.115 935.867 985.115L935.867 985.115z">
@@ -530,7 +390,7 @@
                                 fill="#000000" opacity="1" data-original="#000000"></path>
                         </g>
                     </svg>
-                    <span>3</span>
+                    <span>{{ liked_count }}</span>
                 </a>
             </li>
             <li>
@@ -818,36 +678,32 @@
                     </a>
                 </div>
                 <ul class="mn-wishlist-pro-items">
+                {% for product in user_liked_products %}
+                    {% with variant=product.variants.first %}
                     <li class="wishlist-sidebar-list">
-                        <a href="product-detail.html" class="mn-pro-img"><img src="{% static 'assets/img/product/15.jpg' %}"
-                                alt="product"></a>
+                        <a href="{% url 'products:product_details' product.id %}" class="mn-pro-img">
+                            <img src="{{ variant.image.url }}" alt="{{ product.name }}">
+                        </a>
                         <div class="mn-pro-content">
-                            <a href="product-detail.html" class="wishlist-pro-title">Leather bag</a>
-                            <span class="wishlist-price"><span>$499.00</span><span class="stock">- 9 in
-                                    Stock</span></span>
-                            <a href="javascript:void(0)" class="wishlist-remove-item">×</a>
+                            <a href="{% url 'products:product_details' product.id %}" class="wishlist-pro-title">
+                                {{ product.name }}
+                            </a>
+                            <span class="wishlist-price">
+                                {% if variant.discount %}
+                                    <span>${{ variant.price|floatformat:2 }}</span>
+                                    <span class="old-price">${{ variant.price|floatformat:2|add:"-"|add:variant.discount.amount }}</span>
+                                {% else %}
+                                    <span>${{ variant.price|floatformat:2 }}</span>
+                                {% endif %}
+                                <span class="stock">- {{ variant.stock }} in Stock</span>
+                            </span>
+                            <a href="{% url 'products:toggle_like' product.id %}" class="wishlist-remove-item">×</a>
                         </div>
                     </li>
-                    <li class="wishlist-sidebar-list">
-                        <a href="product-detail.html" class="mn-pro-img"><img src="{% static 'assets/img/product/13.jpg' %}"
-                                alt="product"></a>
-                        <div class="mn-pro-content">
-                            <a href="product-detail.html" class="wishlist-pro-title">Leather Belt</a>
-                            <span class="wishlist-price"><span>$59.00</span><span class="stock">- 4 in
-                                    Stock</span></span>
-                            <a href="javascript:void(0)" class="wishlist-remove-item">×</a>
-                        </div>
-                    </li>
-                    <li class="wishlist-sidebar-list">
-                        <a href="product-detail.html" class="mn-pro-img"><img src="{% static 'assets/img/product/5.jpg' %}"
-                                alt="product"></a>
-                        <div class="mn-pro-content">
-                            <a href="product-detail.html" class="wishlist-pro-title">T-Shirt for men</a>
-                            <span class="wishlist-price"><span>$65.00</span><span class="stock">- 54 in
-                                    Stock</span></span>
-                            <a href="javascript:void(0)" class="wishlist-remove-item">×</a>
-                        </div>
-                    </li>
+                    {% endwith %}
+                {% empty %}
+                    <li>No products in wishlist.</li>
+                {% endfor %}
                 </ul>
             </div>
             <div class="mn-wishlist-bottom">

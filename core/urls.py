@@ -24,6 +24,7 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),  # <-- This line is required
     path('admin/', admin.site.urls),
     path('', include('home.urls', namespace='home')),
+    path('accounts/', include('allauth.urls')),  # allauth urls
     path('products', include('products.urls', namespace='products')),
 ]
 if settings.DEBUG:

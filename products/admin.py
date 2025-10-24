@@ -2,10 +2,19 @@ from django.contrib import admin
 import admin_thumbnails
 from .models import *
 
+@admin.register(MainCategory)
+class MainCategoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug")
+    prepopulated_fields = {"slug": ("name",)}
+    search_fields = ("name",)
+
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug']
-    prepopulated_fields = {'slug': ('name',)}
+    list_display = ("name", "main_category", "slug")
+    list_filter = ("main_category",)
+    prepopulated_fields = {"slug": ("name",)}
+    search_fields = ("name", "main_category__name")
 
 # Thumbnail preview only for the image inline
 @admin_thumbnails.thumbnail('image')

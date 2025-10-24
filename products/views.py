@@ -1,6 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
+from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def shop(request):
@@ -93,6 +96,9 @@ def product_details(request, id):
         discount_percent = discount.amount
         final_price = original_price - (original_price * discount.amount / 100)
 
+    # get absolute URL for share
+    current_site = get_current_site(request)
+    product_url = f"http://{current_site.domain}{product.get_absolute_url()}"  # assuming get_absolute_url() exists
 
     context = {
         'product': product,
@@ -106,5 +112,76 @@ def product_details(request, id):
         'final_price': final_price,
         'discount_percent': discount_percent,
         'discount_end': discount_end,
+        'product_url': product_url,
+        'variant': variant,   # ✅ add this line
     }
     return render(request, 'products/product_detail.html', context)
+
+def category_products(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+
+    # Get all products of this category
+    products = category.products.all()  # Assuming Product has FK to Category
+
+    product_data = []
+    for product in products:
+        variants = product.variants.all()
+        if not variants.exists():
+            continue
+
+        # pick one variant per product to show in main listing
+        first_variant = variants.filter(show_in_main_page=True).first() or variants.first()
+
+        # get all colors
+        colors = [{
+            'color_name': v.color.name,
+            'color_code': getattr(v.color, 'color', '#000'),
+            'image': v.image.url,
+            'image_hover': v.image_hover.url
+        } for v in variants]
+
+        # get all sizes
+        sizes = [v.size.size for v in variants]
+
+        # price/discount
+        discount = (
+            Discount.objects.filter(variant=first_variant, active=True).first()
+            or Discount.objects.filter(product=product, active=True).first()
+            or Discount.objects.filter(category=category, active=True).first()
+        )
+        original_price = first_variant.price
+        if discount:
+            final_price = first_variant.price - (first_variant.price * discount.amount / 100)
+        else:
+            final_price = first_variant.price
+
+        product_data.append({
+            'product': product,
+            'first_variant': first_variant,
+            'colors': colors,
+            'sizes': sizes,
+            'original_price': original_price,
+            'final_price': final_price,
+            'has_discount': discount is not None,
+        })
+
+    context = {
+        'category': category,
+        'products': product_data,
+    }
+
+    return render(request, 'category/products.html', context)
+
+@login_required
+def toggle_like(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    user = request.user
+
+    if user in product.liked_by.all():
+        product.liked_by.remove(user)
+        liked = False
+    else:
+        product.liked_by.add(user)
+        liked = True
+
+    return redirect('products:product_details', id=product.id)
