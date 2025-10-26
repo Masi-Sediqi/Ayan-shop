@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Main Content -->
+<div class="mn-main-content">
+    <div class="mn-breadcrumb m-b-30">
+        <div class="row">
+            <div class="col-12">
+                <div class="row gi_breadcrumb_inner">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="mn-breadcrumb-title">Wishlist Page</h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <!-- mn-breadcrumb-list start -->
+                        <ul class="mn-breadcrumb-list">
+                            <li class="mn-breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="mn-breadcrumb-item active">Wishlist Page</li>
+                        </ul>
+                        <!-- mn-breadcrumb-list end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist section -->
+    <section class="mn-wishlist-page p-b-15">
+        <div class="mn-title d-none">
+            <h2>Product <span>Wishlist</span></h2>
+            <p>Your product wish is our first priority.</p>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mn-vendor-dashboard-card">
+                    <div class="mn-vendor-card-header">
+                        <h5>Wishlist</h5>
+                        <div class="mn-header-btn">
+                            <a class="mn-btn-2" href="{% url 'products:shop' %}"><span>Shop Now</span></a>
+                        </div>
+                    </div>
+                    <div class="mn-vendor-card-body">
+                        <div class="mn-vendor-card-table">
+                            <table class="mn-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="wish-empt">
+                                {% for item in wishlist_data %}
+                                    <tr class="pro-gl-content">
+                                        <td><span>{{ forloop.counter }}</span></td>
+
+                                        <td data-label="Product" class="mn-cart-pro-name">
+                                            <a href="{% url 'products:product_details' item.product.id %}" class="mn-item">
+                                                <img class="prod-img" src="{{ item.image }}" alt="{{ item.product.name }}">
+                                                {{ item.product.name }}
+                                            </a>
+                                        </td>
+
+                                        <td><span>{{ item.product.created_at|date:"d M Y" }}</span></td>
+                                        <td><span>${{ item.price }}</span></td>
+
+                                        {% if item.stock > 0 %}
+                                            <td><span class="in text-success">In Stock ({{ item.stock }})</span></td>
+                                        {% else %}
+                                            <td><span class="out text-danger">Out of Stock</span></td>
+                                        {% endif %}
+
+                                        <td>
+                                            <span class="tbl-btn">
+                                                <!-- <a class="mn-btn-2 add-to-cart mn-add-cart" href="javascript:void(0)" title="Add To Cart">
+                                                    <span><i class="ri-shopping-cart-line"></i></span>
+                                                </a> -->
+                                                <a class="mn-btn-2 mn-whatsapp-share"
+                                                    href="https://wa.me/?text={{ request.build_absolute_uri|add:item.product.get_absolute_url }}"
+                                                    target="_blank"
+                                                    title="Share on WhatsApp">
+                                                    <span><i class="ri-whatsapp-line"></i></span>
+                                                </a>
+                                                <a class="mn-btn-1 mn-remove-wish btn" href="javascript:void(0)" title="Remove From List">
+                                                    <span><i class="ri-close-line"></i></span>
+                                                </a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

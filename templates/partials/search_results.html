@@ -1,0 +1,33 @@
+{% if results %}
+<ul class="mn-search-pro-items">
+    {% for product in results %}
+    <li class="search-sidebar-list">
+        <a href="{{ product.get_absolute_url }}" class="mn-pro-img">
+            <img src="{{ product.variants.first.image.url }}" alt="{{ product.name }}">
+        </a>
+        <div class="mn-pro-content">
+            <a href="{{ product.get_absolute_url }}" class="search-pro-title">{{ product.name }}</a>
+            <a href="#" class="search-cat">{{ product.category.name }}</a>
+            <span class="search-price">
+                <span>${{ product.variants.first.price }}</span>
+            </span>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="text-muted">No products found.</p>
+{% endif %}
+
+{% if recent_searches %}
+<div class="mn-search-also m-t-15">
+    <div class="mn-search-title">
+        <span class="search_title">Recently searches</span>
+    </div>
+    <ul>
+        {% for search in recent_searches %}
+        <li><a href="?q={{ search.query }}">{{ search.query }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

@@ -1,6 +1,7 @@
 from django.contrib import admin
 import admin_thumbnails
 from .models import *
+from django.utils.html import format_html
 
 @admin.register(MainCategory)
 class MainCategoryAdmin(admin.ModelAdmin):
@@ -69,3 +70,17 @@ class DiscountAdmin(admin.ModelAdmin):
     list_display = ['name',  'amount', 'active', 'start_date', 'end_date']
     list_filter = [ 'active', 'start_date', 'end_date']
     search_fields = ['name']
+
+@admin.register(Reviews)
+class ReviewsAdmin(admin.ModelAdmin):
+    list_display = ('name', 'product', 'rating', 'detail')  # Columns to show in admin
+    list_filter = ('rating', 'product')                     # Filters on right sidebar
+    search_fields = ('name', 'detail', 'product__name')    # Searchable fields
+    readonly_fields = ('image_preview',)                   # If you want to preview image
+    fields = ('product', 'name', 'image', 'image_preview', 'detail', 'rating')
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="60" style="border-radius:5px;" />', obj.image.url)
+        return "-"
+    image_preview.short_description = 'Image Preview'

@@ -137,3 +137,31 @@ class Discount(models.Model):
             return price
 
         return price - (price * (self.amount / 100))
+    
+class Reviews(models.Model):
+    product = models.ForeignKey(
+        Product,  # assuming you have a Product model
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    name = models.CharField(max_length=100, blank=False)
+    image = models.ImageField(upload_to="products/reviews", blank=True)
+    detail = models.TextField()
+    
+    rating = models.PositiveIntegerField(default=5) 
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.product.name} ({self.rating}⭐)"
+    
+class RecentSearch(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recent_searches')
+    query = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.query

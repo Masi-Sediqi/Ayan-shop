@@ -60,11 +60,11 @@
 								<span class="bg">0%</span>
 							{% endif %}
 							<h3>{{ item.category.name }}</h3>
-							<p>Items (16)</p>
+							<p>Items ({{ item.product_count }})</p>
 							<ul>
-								<li><a href="shop-right-sidebar.html"><img src="{{ item.category.image.url }}" alt="category"></a></li>
-								<li><a href="shop-right-sidebar.html"><img src="{{ item.category.second_image.url }}" alt="category"></a></li>
-								<li><a href="shop-right-sidebar.html"><img src="{{ item.category.third_image.url }}" alt="category"></a></li>
+								<li><a href="{% url 'products:category_products' item.category.slug %}"><img src="{{ item.category.image.url }}" alt="category"></a></li>
+								<li><a href="{% url 'products:category_products' item.category.slug %}"><img src="{{ item.category.second_image.url }}" alt="category"></a></li>
+								<li><a href="{% url 'products:category_products' item.category.slug %}"><img src="{{ item.category.third_image.url }}" alt="category"></a></li>
 							</ul>
 						</div>
 					{% endfor %}
@@ -387,97 +387,23 @@
 						<h2>Our <span>Blogs</span></h2>
 					</div>
 					<div class="mn-blog-carousel owl-carousel">
+						{% for blog in blog_record %}
 						<div class="mn-blog-card">
 							<div class="blog-info">
-								<figure class="blog-img"><a href="#"><img src="{% static 'assets/img/blog/1.jpg' %}"
+								<figure class="blog-img"><a href="{% url 'home:blog_detail' blog.slug %}"><img src="{{ blog.image.url }}"
 											alt="news imag"></a>
 								</figure>
 								<div class="detail">
-									<label>June 30, 2025 - <a href="#">Fashion</a></label>
-									<h3><a href="#">Marketing Guide: 5 Steps to Success to way.</a></h3>
+									<label>{{ blog.created_at|date:"F d, Y" }} - <a href="#">{{ blog.category.name }}</a></label>
+									<h3><a href="{% url 'home:blog_detail' blog.slug %}">{{ blog.title }}</a></h3>
 									<div class="more-info">
-										<a href="blog-detail-right-sidebar.html">Read More<i
+										<a href="{% url 'home:blog_detail' blog.slug %}">Read More<i
 												class="ri-arrow-right-double-line"></i></a>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="mn-blog-card">
-							<div class="blog-info">
-								<figure class="blog-img"><a href="#"><img src="{% static 'assets/img/blog/2.jpg' %}"
-											alt="news imag"></a>
-								</figure>
-								<div class="detail">
-									<label>April 02, 2025 - <a href="#">Shoes</a></label>
-									<h3><a href="#">Best way to solve business issue in market.</a>
-									</h3>
-									<div class="more-info">
-										<a href="blog-detail-right-sidebar.html">Read More<i
-												class="ri-arrow-right-double-line"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="mn-blog-card">
-							<div class="blog-info">
-								<figure class="blog-img"><a href="#"><img src="{% static 'assets/img/blog/3.jpg' %}"
-											alt="news imag"></a>
-								</figure>
-								<div class="detail">
-									<label>Mar 09, 2025 - <a href="#">Grocery</a></label>
-									<h3><a href="#">31 grocery customer service stats know in 2025.</a></h3>
-									<div class="more-info">
-										<a href="blog-detail-right-sidebar.html">Read More<i
-												class="ri-arrow-right-double-line"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="mn-blog-card">
-							<div class="blog-info">
-								<figure class="blog-img"><a href="#"><img src="{% static 'assets/img/blog/4.jpg' %}"
-											alt="news imag"></a>
-								</figure>
-								<div class="detail">
-									<label>January 25, 2025 - <a href="#">Bags</a></label>
-									<h3><a href="#">Business ideas to grow your business traffic.</a></h3>
-									<div class="more-info">
-										<a href="blog-detail-right-sidebar.html">Read More<i
-												class="ri-arrow-right-double-line"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="mn-blog-card">
-							<div class="blog-info">
-								<figure class="blog-img"><a href="#"><img src="{% static 'assets/img/blog/5.jpg' %}"
-											alt="news imag"></a>
-								</figure>
-								<div class="detail">
-									<label>December 10, 2026 - <a href="#">Cosmetics</a></label>
-									<h3><a href="#">Marketing Guide: 5 Steps way to Success.</a></h3>
-									<div class="more-info">
-										<a href="blog-detail-right-sidebar.html">Read More<i
-												class="ri-arrow-right-double-line"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="mn-blog-card">
-							<div class="blog-info">
-								<figure class="blog-img"><a href="#"><img src="{% static 'assets/img/blog/6.jpg' %}"
-											alt="news imag"></a>
-								</figure>
-								<div class="detail">
-									<label>August 08, 2027 - <a href="#">Bags</a></label>
-									<h3><a href="#">15 customer service stats idea know in 2026.</a></h3>
-									<div class="more-info">
-										<a href="blog-detail-right-sidebar.html">Read More<i
-												class="ri-arrow-right-double-line"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
+						{% endfor %}
 					</div>
 				</section>
 

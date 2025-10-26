@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Main Content -->
+<div class="mn-main-content">
+    <div class="mn-breadcrumb m-b-30">
+        <div class="row">
+            <div class="col-12">
+                <div class="row gi_breadcrumb_inner">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="mn-breadcrumb-title">Contact us Page</h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <!-- mn-breadcrumb-list start -->
+                        <ul class="mn-breadcrumb-list">
+                            <li class="mn-breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="mn-breadcrumb-item active">Contact us Page</li>
+                        </ul>
+                        <!-- mn-breadcrumb-list end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        {% if messages %}
+        {% for message in messages %}
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "bottom-end",  // changed from top-end to bottom-end
+            showConfirmButton: false,
+            timer: 9000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "success",
+            title: " {{ message }}"
+        });
+        {% endfor %}
+        {% endif %}
+    </script>
+
+    <!-- Contact us section -->
+    <section class="mn-contact p-b-15">
+        <div class="mn-title d-none">
+            <h2>Get in <span>Touch</span></h2>
+            <p>Please select a topic below related to you inquiry. If you don't fint what you need, fill out
+                our
+                contact form.</p>
+        </div>
+        <div class="row p-t-80">
+            <div class="col-md-6 mn-contact-detail m-b-m-30">
+                <div class="mn-box m-b-30">
+                    <div class="detail">
+                        <div class="icon"><i class="ri-mail-send-line"></i></div>
+                        <div class="info">
+                            <h3 class="title">Contact Mail</h3>
+                            <p>{{ contact_info.email }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mn-box m-b-30">
+                    <div class="detail">
+                        <div class="icon"><i class="ri-customer-service-2-line"></i></div>
+                        <div class="info">
+                            <h3 class="title">Contact Phone</h3>
+                            <p>{{ contact_info.phone_number }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mn-box m-b-30">
+                    <div class="detail">
+                        <div class="icon"><i class="ri-map-pin-line"></i></div>
+                        <div class="info">
+                            <h3 class="title">Address</h3>
+                            <p>{{ contact_info.address }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 m-t-767">
+                <form method="post" action="{% url 'home:contact_us' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="fname" placeholder="Full Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="umail" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="phone" placeholder="Phone">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" name="message" rows="5"
+                            placeholder="Message"></textarea>
+                    </div>
+                    <button type="submit" class="mn-btn-2"><span>Submit</span></button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Main Content -->
+<div class="mn-main-content">
+    <div class="mn-breadcrumb m-b-30">
+        <div class="row">
+            <div class="col-12">
+                <div class="row gi_breadcrumb_inner">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="mn-breadcrumb-title">Blog Page</h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <!-- mn-breadcrumb-list start -->
+                        <ul class="mn-breadcrumb-list">
+                            <li class="mn-breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="mn-breadcrumb-item active">Blog Page</li>
+                        </ul>
+                        <!-- mn-breadcrumb-list end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        {% if messages %}
+        {% for message in messages %}
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "bottom-end",  // changed from top-end to bottom-end
+            showConfirmButton: false,
+            timer: 9000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "success",
+            title: " {{ message }}"
+        });
+        {% endfor %}
+        {% endif %}
+    </script>
+    <div class="row m-b-30">
+        <div class="mn-blogs-rightside col-md-12">
+            <!-- Blog content Start -->
+            <div class="mn-blogs-content">
+                <div class="mn-blogs-inner">
+                    <div class="mn-single-blog-item">
+                        <div class="single-blog-info">
+                            <figure class="blog-img"><a href="#"><img src="{{ blog.image.url }}" alt="news imag"></a>
+                            </figure>
+                            <div class="single-blog-detail">
+                                <label>{{ blog.created_at|date:"F d, Y" }} - <a href="#">{{ blog.category.name }}</a></label>
+                                <h3>{{ blog.title }}</h3>
+                                <p class="mn-text">
+                                    {{ blog.content|safe }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Comments Start -->
+                <div class="mn-blog-comments m-t-30">
+                    <div class="mn-blog-cmt-preview">
+                        <div class="mn-blog-comment-wrapper">
+                            <h4 class="mn-blog-dmn-title">Comments : {{ blog_comments.count }}</h4>
+
+                            {% for comment in blog_comments %}
+                            <div class="mn-single-comment-wrapper mt-35">
+                                <div class="mn-blog-user-img">
+                                    {% if comment.image %}
+                                        <img src="{{ comment.image.url }}" alt="{{ comment.name }}">
+                                    {% else %}
+                                        <img src="{% static 'assets/img/user/default.jpeg' %}" alt="User">
+                                    {% endif %}
+                                </div>
+                                <div class="mn-blog-comment-content">
+                                    <h5>{{ comment.name }}</h5>
+                                    <span>{{ comment.created_at|date:"F j, Y" }}</span>
+                                    <p>{{ comment.comment }}</p>
+                                    <div class="mn-blog-details-btn">
+                                        <a href="javascript:void(0)" onclick="toggleReplyForm({{ comment.id }})">Reply</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Replies -->
+                            {% for reply in comment.replies.all %}
+                            <div class="mn-single-comment-wrapper sub-cmt">
+                                <div class="mn-blog-user-img">
+                                    {% if reply.image %}
+                                        <img src="{{ reply.image.url }}" alt="{{ reply.name }}">
+                                    {% else %}
+                                        <img src="{% static 'assets/img/user/default.jpeg' %}" alt="User">
+                                    {% endif %}
+                                </div>
+                                <div class="mn-blog-comment-content">
+                                    <h5>{{ reply.name }}</h5>
+                                    <span>{{ reply.created_at|date:"F j, Y" }}</span>
+                                    <p>{{ reply.reply_text }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            <!-- Reply Form (Hidden by default) -->
+                            <div id="reply-form-{{ comment.id }}" class="hidden mn-reply-form mt-20">
+                                <form class="mn-blog-form" method="post" enctype="multipart/form-data" action="{% url 'home:comment_reply' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mn-leave-form">
+                                                <input type="text" name="name" placeholder="Full Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mn-leave-form">
+                                                <input type="file" name="image" accept="image/*" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <div class="mn-text-leave">
+                                                <textarea name="reply_text" class="form-control" placeholder="Message" required></textarea>
+                                                <button type="submit" class="mn-btn-2 mt-2">
+                                                    <span>Submit Reply</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            {% endfor %}
+                        </div>
+
+                        <script>
+                        function toggleReplyForm(commentId) {
+                            const form = document.getElementById(`reply-form-${commentId}`);
+                            form.classList.toggle('hidden');
+                        }
+                        </script>
+
+                        <style>
+                        .hidden { display: none; }
+                        .mn-reply-form { padding: 15px; background: #f9f9f9; border-radius: 5px; margin-left: 60px; }
+                        </style>
+
+                    </div>
+                    <div class="mn-blog-cmt-form">
+                        <div class="mn-blog-reply-wrapper mt-50">
+                            <h4 class="mn-blog-dmn-title">Leave A Comment</h4>
+                            <form class="mn-blog-form" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mn-leave-form">
+                                            <input type="text" name="name" placeholder="Full Name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mn-leave-form">
+                                            <input type="file" name="image" accept="image/*" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mn-text-leave">
+                                            <textarea name="comment" placeholder="Message" required></textarea>
+                                            <button type="submit" name="comment_submit" class="mn-btn-2">
+                                                <span>Submit</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Comments End -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
