@@ -1,0 +1,16 @@
+{% if results %}
+    {% for result in results %}
+    <div class="mn-sidebar-block-item">
+        <div class="mn-sidebar-block-img">
+           <a href="{% url 'home:blog_detail' result.slug %}"><img src="{{ result.image.url }}" alt="blog imag"></a>
+        </div>
+        <div class="mn-sidebar-block-detial">
+            <h5 class="mn-blog-title"><a href="{% url 'home:blog_detail' result.slug %}">{{ result.title }}</a></h5>
+            <div class="mn-blog-date">{{ result.created_at|date:"F d, Y" }}</div>
+            <a href="">- {{ result.category.name }}</a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p class="text-muted">No products found.</p>
+{% endif %}

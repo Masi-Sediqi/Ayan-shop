@@ -187,3 +187,13 @@ def product_search(request):
         "results": results,
         "recent_searches": recent_searches
     })
+
+def search_blog(request):
+    query = request.GET.get("q")
+    print(query)  # for debugging
+    if query:
+        results = Blog.objects.filter(Q(title__icontains=query) | Q(short_description__icontains=query) | Q(content__icontains=query))[:5]
+
+    return render(request, "partials/blog_search_results.html", {
+        "results": results,
+    })

@@ -14,7 +14,7 @@
 							<div class="col-md-6 col-sm-12">
 								<!-- mn-breadcrumb-list start -->
 								<ul class="mn-breadcrumb-list">
-									<li class="mn-breadcrumb-item"><a href="index.html">Home</a></li>
+									<li class="mn-breadcrumb-item"><a href="/">Home</a></li>
 									<li class="mn-breadcrumb-item active">Product Page</li>
 								</ul>
 								<!-- mn-breadcrumb-list end -->
@@ -63,18 +63,6 @@
 											<div class="single-pro-desc m-t-991">
 												<div class="single-pro-content">
 													<h5 class="mn-single-title">{{ product.name }}</h5>
-													<div class="mn-single-rating-wrap">
-														<div class="mn-single-rating mn-pro-rating">
-															<i class="ri-star-fill"></i>
-															<i class="ri-star-fill"></i>
-															<i class="ri-star-fill"></i>
-															<i class="ri-star-fill"></i>
-															<i class="ri-star-fill grey"></i>
-														</div>
-														<span class="mn-read-review">
-															|&nbsp;&nbsp;<a href="#mn-spt-nav-review">992 Ratings</a>
-														</span>
-													</div>
 
 													<div class="mn-single-price-stoke">
 														<div class="mn-single-price">
@@ -92,15 +80,16 @@
 															<!-- <div class="mrp">M.R.P. : <span>$2,999.00</span></div> -->
 														</div>
 														<div class="mn-single-stoke">
-															<span class="mn-single-sku">SKU#: WH12</span>
-															<span class="mn-single-ps-title">IN STOCK</span>
+															{% if variant.stock > 0 %}
+																<span class="mn-single-ps-title text-success">IN STOCK</span>
+															{% else %}
+																<span class="mn-single-ps-title text-danger">OUT OF STOCK</span>
+															{% endif %}
 														</div>
 													</div>
 												<div class="mn-single-sales">
                                                     <div class="mn-single-sales-inner">
-                                                        <div class="mn-single-sales-visitor">
-                                                            Real time <span>56</span> visitor right now!
-                                                        </div>
+                                                      
 
                                                         {% if discount_end %}
                                                         <div class="mn-single-sales-countdown">
@@ -448,10 +437,6 @@
 															{% endfor %}
 														</ul>
 													</div>
-													<a href="javascript:void(0);" class="mn-wishlist" data-tooltip
-														title="Wishlist">
-														<i class="ri-heart-line"></i>
-													</a>
 												</div>
 											</div>
 										</div>

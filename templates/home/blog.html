@@ -14,7 +14,7 @@
                     <div class="col-md-6 col-sm-12">
                         <!-- mn-breadcrumb-list start -->
                         <ul class="mn-breadcrumb-list">
-                            <li class="mn-breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="mn-breadcrumb-item"><a href="/">Home</a></li>
                             <li class="mn-breadcrumb-item active">Blog Page</li>
                         </ul>
                         <!-- mn-breadcrumb-list end -->
@@ -60,146 +60,80 @@
             </div>
             <!--Blog content End -->
         </div>
-
+        <script src="{% static 'assets/js/html.min.js' %}"></script>
         <!-- Sidebar Area Start -->
         <div class="mn-blogs-sidebar mn-blogs-leftside col-lg-4 col-md-12 m-t-991">
             <div class="mn-blog-search">
-                <form class="mn-blog-search-form" action="#">
-                    <input class="form-control" placeholder="Search Our Blog" type="text">
-                    <button class="submit" type="submit"><i class="ri-search-line"></i></button>
+                <form class="mn-blog-search-form" action="{% url 'home:search_blog' %}" title="Do Submit The Form Just Write What Do You Want">
+                    <input 
+                           class="form-control" 
+                           placeholder="Search Our Blog" 
+                           type="text"
+                           name="q"
+                           autocomplete="off" 
+                           hx-get='{% url 'home:search_blog' %}' 
+                           hx-trigger="keyup changed delay:500ms" 
+                           hx-target="#blog-search-results">
+
+                    <button class="submit"><i class="ri-search-line"></i></button>
                 </form>
             </div>
             <div class="mn-blog-sidebar-wrap">
                 <!-- Sidebar Recent Blog Block -->
                 <div class="mn-sidebar-block mn-sidebar-recent-blog">
                     <div class="mn-sb-title">
-                        <h3 class="mn-sidebar-title">Recent Articles</h3>
+                        <h3 class="mn-sidebar-title">Results Articles</h3>
                     </div>
                     <div class="mn-blog-block-content mn-sidebar-dropdown">
-                        <div class="mn-sidebar-block-item">
-                            <div class="mn-sidebar-block-img">
-                                <img src="{% static 'assets/img/blog/6.jpg' %}" alt="blog imag">
-                            </div>
-                            <div class="mn-sidebar-block-detial">
-                                <h5 class="mn-blog-title"><a href="blog-detail-right-sidebar.html">The best
-                                        fashion influencers.</a></h5>
-                                <div class="mn-blog-date">February 10, 2025-2026</div>
-                                <a href="blog-right-sidebar.html">- Organic</a>
-                            </div>
+                        <div id="spinner" class="loader-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
                         </div>
-                        <div class="mn-sidebar-block-item">
-                            <div class="mn-sidebar-block-img">
-                                <img src="{% static 'assets/img/blog/5.jpg' %}" alt="blog imag">
-                            </div>
-                            <div class="mn-sidebar-block-detial">
-                                <h5 class="mn-blog-title"><a href="blog-detail-right-sidebar.html">Vogue
-                                        Shopping
-                                        Weekend.</a></h5>
-                                <div class="mn-blog-date">March 14, 2025-2026</div>
-                                <a href="blog-right-sidebar.html">- Fruits</a>
-                            </div>
-                        </div>
-                        <div class="mn-sidebar-block-item">
-                            <div class="mn-sidebar-block-img">
-                                <img src="{% static 'assets/img/blog/4.jpg' %}" alt="blog imag">
-                            </div>
-                            <div class="mn-sidebar-block-detial">
-                                <h5 class="mn-blog-title"><a href="blog-detail-right-sidebar.html">Fashion
-                                        Market
-                                        Reveals Her Jacket.</a></h5>
-                                <div class="mn-blog-date">June 09, 2025-2026</div>
-                                <a href="blog-right-sidebar.html">- Vegetables</a>
-                            </div>
-                        </div>
-                        <div class="mn-sidebar-block-item">
-                            <div class="mn-sidebar-block-img">
-                                <img src="{% static 'assets/img/blog/3.jpg' %}" alt="blog imag">
-                            </div>
-                            <div class="mn-sidebar-block-detial">
-                                <h5 class="mn-blog-title"><a href="blog-detail-right-sidebar.html">Summer
-                                        Trending Fashion Market.</a></h5>
-                                <div class="mn-blog-date">July 17, 2025-2026</div>
-                                <a href="blog-right-sidebar.html">- Fastfood</a>
-                            </div>
-                        </div>
-                        <div class="mn-sidebar-block-item">
-                            <div class="mn-sidebar-block-img">
-                                <img src="{% static 'assets/img/blog/2.jpg' %}" alt="blog imag">
-                            </div>
-                            <div class="mn-sidebar-block-detial">
-                                <h5 class="mn-blog-title"><a href="blog-detail-right-sidebar.html">Winter 2025
-                                        Trending Fashion Market.</a></h5>
-                                <div class="mn-blog-date">August 02, 2025-2026</div>
-                                <a href="blog-right-sidebar.html">- Vegetables</a>
-                            </div>
-                        </div>
+                        <div id="blog-search-results" class="mn-search-list"></div>
                     </div>
                 </div>
-                <!-- Sidebar Recent Blog Block -->
-                <!-- Sidebar Category Block -->
-                <div class="mn-sidebar-block">
-                    <div class="mn-sb-title">
-                        <h3 class="mn-sidebar-title">Categories</h3>
-                    </div>
-                    <div class="mn-blog-block-content mn-sidebar-dropdown">
-                        <ul>
-                            <li>
-                                <div class="mn-sidebar-block-item">
-                                    <input type="checkbox" checked> <a href="javascript:void(0)">Dairy &
-                                        Milk<span title="Products">- 68</span></a><span class="checked"></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="mn-sidebar-block-item">
-                                    <input type="checkbox"> <a href="javascript:void(0)">Seafood<span
-                                            title="Products">-
-                                            58</span></a><span class="checked"></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="mn-sidebar-block-item">
-                                    <input type="checkbox"> <a href="javascript:void(0)">Bakery<span
-                                            title="Products">- 84</span></a><span class="checked"></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="mn-sidebar-block-item">
-                                    <input type="checkbox"> <a href="javascript:void(0)">cosmetics<span
-                                            title="Products">-
-                                            63</span></a><span class="checked"></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="mn-sidebar-block-item">
-                                    <input type="checkbox"> <a href="javascript:void(0)">electrics<span
-                                            title="Products">-
-                                            75</span></a><span class="checked"></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="mn-sidebar-block-item">
-                                    <input type="checkbox"> <a href="javascript:void(0)">phones<span
-                                            title="Products">- 26</span></a><span class="checked"></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="mn-sidebar-block-item">
-                                    <input type="checkbox"> <a href="javascript:void(0)">Clothes<span
-                                            title="Products">-
-                                            39</span></a><span class="checked"></span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="mn-sidebar-block-item">
-                                    <input type="checkbox"> <a href="javascript:void(0)">Watch<span
-                                            title="Products">- 48</span></a><span class="checked"></span>
-                                </div>
-                            </li>
+                <style>
+                .loader-dots {
+                    display: flex;
+                    justify-content: center; /* center horizontally */
+                    align-items: center;     /* center vertically if parent has height */
+                    gap: 6px;                /* space between dots */
+                    margin: 20px 0;          /* optional spacing */
+                }
 
-                        </ul>
-                    </div>
-                </div>
-                <!-- Sidebar Category Block -->
+                .loader-dots span {
+                    width: 10px;
+                    height: 10px;
+                    background-color: #000;
+                    border-radius: 50%;
+                    display: inline-block;
+                    animation: bounce 1.2s infinite ease-in-out;
+                }
+
+                /* Animate each dot with delay */
+                .loader-dots span:nth-child(1) { animation-delay: 0s; }
+                .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+                .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+                @keyframes bounce {
+                    0%, 80%, 100% { transform: scale(0); }
+                    40% { transform: scale(1); }
+                }
+
+                </style>
+                <script>
+                const spinner = document.getElementById('spinner');
+                // Show spinner on request start
+                document.body.addEventListener('htmx:configRequest', function(event) {
+                spinner.style.display = 'inline-block';
+                });
+                // Hide spinner on request finish (success or failure)
+                document.body.addEventListener('htmx:afterRequest', function(event) {
+                spinner.style.display = 'none';
+                });
+                </script>
+                <!-- Sidebar Recent Blog Block -->
             </div>
         </div>
     </div>

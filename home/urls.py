@@ -11,4 +11,5 @@ urlpatterns = [
     path('comment_reply', views.comment_reply, name='comment_reply'),
     path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
     path('search/', views.product_search, name='product_search'),
+    path('search/blog/', views.search_blog, name='search_blog'),
 ]
