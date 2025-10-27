@@ -162,7 +162,7 @@ cython_debug/
 
 
 # Django migrations
-# */migrations/
+*/migrations/
 
 
 # Byte-compiled / optimized / DLL files
