@@ -57,7 +57,6 @@ cover/
 
 # Django stuff:
 *.log
-local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
@@ -172,10 +171,6 @@ __pycache__/
 
 # Media files
 media/
-
-# Django settings
-settings.py
-local_settings.py
 
 
 # Byte-compiled / optimized / DLL files
