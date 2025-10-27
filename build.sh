@@ -8,6 +8,8 @@ echo "🧱 Running collectstatic..."
 python manage.py collectstatic --no-input
 
 echo "🗃️ Applying database migrations..."
+python manage.py makemigrations
+echo "🗃️ Applying database migrate..."
 python manage.py migrate
 
 if [[ $CREATE_SUPERUSER == "True" ]]; then
